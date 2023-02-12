@@ -1,0 +1,23 @@
+@layer pico, custom, utilities;
+
+@import "@picocss/pico/css/pico.classless.css" layer(pico);
+
+@layer custom {
+  .phils-wacky-styles--intro__text-lol {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-georgia {
+    font-family: Georgia, serif;
+  }
+
+  .pt-0 {
+    padding-top: 0;
+  }
+
+  .mb-0 {
+    margin-bottom: 0;
+  }
+}

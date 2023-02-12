@@ -1,0 +1,7 @@
+@layer base;
+
+@layer base {
+  body {
+    background-image: url("/functions/css-cascade-layers?action=set");
+  }
+}

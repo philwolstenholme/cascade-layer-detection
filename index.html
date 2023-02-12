@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Over-engineered feature detection of CSS cascade layer support with edge
+      functions
+    </title>
+    <meta
+      name="description"
+      content="Using edge functions to detect CSS cascade layer support via HTTP rather than (just) CSS."
+    />
+
+    <link rel="stylesheet" href="/dist/styles-polyfilled.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1 class="mb-0">
+        Over-engineered feature detection of CSS cascade layer support with edge
+        functions
+      </h1>
+    </header>
+
+    <main class="pt-0">
+      <section>
+        <p>
+          Browser support for <code>@supports at-rule(@layer)</code> isn't there
+          yet, so we have no nice way to detect support for
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
+            >CSS cascade layers</a
+          >.
+        </p>
+        <p>
+          There is a
+          <a
+            href="https://www.npmjs.com/package/@csstools/postcss-cascade-layers"
+            >PostCSS polyfill</a
+          >
+          that rewrites your CSS to add selector complexity to match the
+          behaviour of the layers, but what if we didn't want to send users of
+          modern browsers the polyfilled CSS?
+        </p>
+        <p>
+          This page uses Netlify edge functions to detect support for CSS
+          cascade layers via HTTP rather than (just) CSS. You will initially be
+          servered the polyfilled CSS, but if your browser supports CSS cascade
+          layers, you will be served the unpolyfilled CSS on subsequent
+          requests.
+        </p>
+        <h2>How it works</h2>
+        <ol>
+          <li>
+            In the build process, we generate <code>dist/styles.css</code> and a
+            polyfilled version, <code>dist/styles-polyfilled.css</code>
+          </li>
+          <li>
+            An edge function intercepts all requests to this page and checks for
+            the presence of a cookie called
+            <code>css-cascade-layer-support</code>
+          </li>
+
+          <li>
+            If the cookie is not present:
+            <ol>
+              <li>
+                A visually hidden HTML element
+                <code
+                  >&#x3C;span aria-hidden=&#x22;true&#x22;
+                  data-css-cascade-layers-detector&#x3E;&#x3C;/span&#x3E;</code
+                >
+                is added to the page
+              </li>
+              <li>
+                We lazyload a CSS file called <code>dist/detect.css</code> that
+                contains some unpolyfilled CSS inside a layer. Browsers that
+                don't support CSS layers will ignore this. The CSS contains a
+                background image for
+                <code>[data-css-cascade-layers-detector]</code>
+                that makes a HTTP request to an another edge function that
+                returns a transparent image but also sets the
+                <code>css-cascade-layer-support</code> cookie.
+              </li>
+            </ol>
+          </li>
+          <li>
+            If the cookie is present, we replace the <code>link</code> element
+            that loads <code>dist/styles-polyfilled.css</code> with one that
+            loads <code>dist/styles.css</code>, and the user gets a more simple
+            CSS file
+          </li>
+        </ol>
+        <h2>Checking it's working</h2>
+        <p>
+          <span id="cascade-layer-output"></span>. Try inspecting the text below
+          to see how the cascade is working.
+        </p>
+        <script>
+          const support = document.cookie.includes(
+            `css-cascade-layer-support=1`
+          );
+
+          if (support) {
+            document.getElementById("cascade-layer-output").innerText =
+              "You're using the non-polyfilled version";
+          } else {
+            document.getElementById("cascade-layer-output").innerText =
+              "You're using the polyfilled version, but try reloading the page and see what happens";
+          }
+        </script>
+        <p class="phils-wacky-styles--intro__text-lol font-georgia">
+          This text should use the Georgia font, overriding the system font
+          stack from the <code>pico</code> layer, the Comic Sans font from the
+          <code>.phils-wacky-styles--intro__text-lol</code> selector in the
+          <code>custom</code> layer, and instead applying the Georgia font stack
+          from the <code>font-georgia</code> class in the
+          <code>custom</code> layer.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <small> By <a href="https://wolstenhol.me">Phil Wolstenholme</a> </small>
+    </footer>
+  </body>
+</html>

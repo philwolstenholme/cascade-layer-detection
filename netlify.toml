@@ -1,0 +1,9 @@
+
+
+[[edge_functions]]
+function = "css-cascade-layers"
+path = "/functions/css-cascade-layers"
+
+[[edge_functions]]
+function = "transform-response"
+path = "/"

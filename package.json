@@ -1,0 +1,19 @@
+{
+  "name": "cascade-layer-detect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:css",
+    "build:css": "NODE_ENV='with-cascade-polyfill' postcss styles.css -o dist/styles-polyfilled.css && NODE_ENV='without-cascade-polyfill' postcss styles.css -o dist/styles.css && cp detect.css dist/detect.css"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@picocss/pico": "^1.5.7",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^8.0.1"
+  }
+}
