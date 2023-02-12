@@ -1,8 +1,5 @@
 @layer base {
   [data-css-cascade-layers-detector] {
     background-image: url("/functions/css-cascade-layers?action=set");
-    position: absolute;
-    left: -9999px;
-    top: -9999px;
   }
 }
