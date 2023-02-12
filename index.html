@@ -26,14 +26,19 @@
     <main class="pt-0">
       <section>
         <p>
-          Browser support for <code>@supports at-rule(@layer)</code> isn't there
-          yet, so we have no nice way to detect support for
           <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
             >CSS cascade layers</a
-          >.
+          >
+          sound great for projects where CSS may be coming from multiple
+          sources, and you want a nice way to manage the cascade. Unfortunately,
+          there will still be users on older devices that don't have an
+          up-to-date enough browser for cascade layers. Browsers that don't
+          support cascade layers will <em>ignore</em> any CSS inside a layer, so
+          these users might see a pretty broken site if you used layers
+          extensively.
         </p>
         <p>
-          There is a
+          Luckily, there is a
           <a
             href="https://www.npmjs.com/package/@csstools/postcss-cascade-layers"
             >PostCSS polyfill</a
@@ -43,11 +48,23 @@
           modern browsers the polyfilled CSS?
         </p>
         <p>
-          This page uses Netlify edge functions to detect support for CSS
-          cascade layers via HTTP rather than (just) CSS. You will initially be
-          servered the polyfilled CSS, but if your browser supports CSS cascade
-          layers, you will be served the unpolyfilled CSS on subsequent
-          requests.
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS/@supports#syntax"
+            ><code>@supports at-rule(@layer)</code> in CSS or
+            <code>CSS.supports('at-rule(@layer)')</code> in JavaScript is not a
+            thing</a
+          >
+          yet, so we have no nice way to feature detect support for
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"
+            >CSS cascade layers</a
+          >.
+        </p>
+        <p>
+          This page uses edge functions to detect support for CSS cascade layers
+          via HTTP rather than (just) CSS. You will initially be served the
+          polyfilled CSS, but if your browser supports CSS cascade layers, you
+          will be served the unpolyfilled CSS on subsequent requests (e.g. if
+          you reload the page).
         </p>
         <h2>How it works</h2>
         <ol>
