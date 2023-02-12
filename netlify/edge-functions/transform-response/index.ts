@@ -20,15 +20,13 @@ export default async (request: Request, context: Context) => {
     // non-polyfilled CSS.
     newBody = body.replace(
       "</body>",
-      `<span aria-hidden="true" data-css-cascade-layers-detector style="position: absolute;left: -9999px;top: -9999px;"></span>
+      `<span aria-hidden="true" data-css-cascade-layers-detector style="position:absolute;left:-9999px;top:-9999px;"></span>
       <link
         rel="preload"
         href="/dist/detect.css"
         as="style"
         onload="this.onload=null;this.rel='stylesheet'"
       />
-
-
       <noscript>
         <link rel="stylesheet" href="/dist/detect.css" />
       </noscript>
