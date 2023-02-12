@@ -58,7 +58,11 @@
           <li>
             An edge function intercepts all requests to this page and checks for
             the presence of a cookie called
-            <code>css-cascade-layer-support</code>
+            <code>css-cascade-layer-support</code>. You can
+            <a
+              href="https://github.com/philwolstenholme/cascade-layer-detection/blob/main/netlify/edge-functions/transform-response/index.ts"
+              >see the function's code here</a
+            >.
           </li>
 
           <li>
@@ -78,8 +82,12 @@
                 don't support CSS layers will ignore this. The CSS contains a
                 background image for
                 <code>[data-css-cascade-layers-detector]</code>
-                that makes a HTTP request to an another edge function that
-                returns a transparent image but also sets the
+                that makes a HTTP request to an
+                <a
+                  href="https://github.com/philwolstenholme/cascade-layer-detection/blob/main/netlify/edge-functions/css-cascade-layers/index.ts"
+                  >another edge function</a
+                >
+                that returns a transparent image but also sets the
                 <code>css-cascade-layer-support</code> cookie.
               </li>
             </ol>
