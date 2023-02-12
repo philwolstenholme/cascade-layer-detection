@@ -27,6 +27,8 @@ export default async (request: Request, context: Context) => {
         as="style"
         onload="this.onload=null;this.rel='stylesheet'"
       />
+
+      
       <noscript>
         <link rel="stylesheet" href="/dist/detect.css" />
       </noscript>
