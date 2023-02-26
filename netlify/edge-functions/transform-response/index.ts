@@ -1,6 +1,12 @@
 import { Context } from "https://edge.netlify.com";
 
 export default async (request: Request, context: Context) => {
+  // Return early if this is not a HTML response.
+  const contentType = request.headers.get("content-type");
+  if (!contentType || !contentType.includes("text/html")) {
+    return context.next();
+  }
+
   const response = await context.next();
   const body = await response.text();
   let newBody = body;
